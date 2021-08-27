@@ -18,28 +18,37 @@ const searchFood = () => {
 const displayFood = meals => {
         const foodContainer = document.getElementById('food-container');
         foodContainer.textContent = '';
-        meals.forEach(meal => {
-                // console.log(meal);
+        const nullMessage = document.getElementById('meal-details')
+        nullMessage.innerText = '';
+        if (meals == null) {
                 const div = document.createElement('div');
-                div.classList.add('meal');
                 div.innerHTML = `
-                        <div onclick="loadMealDetails('${meal.idMeal}')" class="col">
-                                <div class="card h-100">
-                                        <img src=${meal.strMealThumb} class="card-img-top p-4 rounded" alt="...">
-                                        <div class="card-body">
-                                                <h5 class="card-title">${meal.strMeal}</h5>
-                                                <p class="card-text">${meal.strInstructions.slice(0, 150)}</p>
+                        <h4 class="text-danger text-center">There is no food you have searched</h4>
+                `;
+                nullMessage.appendChild(div);
+        }
+        else {
+                meals.forEach(meal => {
+                        const div = document.createElement('div');
+                        div.classList.add('meal');
+                        div.innerHTML = `
+                                <div onclick="loadMealDetails('${meal.idMeal}')" class="col">
+                                        <div class="card h-100">
+                                                <img src=${meal.strMealThumb} class="card-img-top p-4 rounded" alt="...">
+                                                <div class="card-body">
+                                                        <h5 class="card-title">${meal.strMeal}</h5>
+                                                        <p class="card-text">${meal.strInstructions.slice(0, 150)}</p>
+                                                </div>
                                         </div>
                                 </div>
-                        </div>
-                `
-                foodContainer.appendChild(div);
-        })
+                        `
+                        foodContainer.appendChild(div);
+                })
+        }
 }
 
 // Load Meal Details:
 const loadMealDetails = (id) => {
-        // console.log(id);
         const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
         fetch(url)
                 .then(res => res.json())
@@ -48,16 +57,11 @@ const loadMealDetails = (id) => {
 
 //Display Meal Details:
 const displayMealDetails = (meal) => {
-        // If There is no Meal:
-        if (meal.length == 0) {
-                alert('There is no');
-        }
-
         const mealDetail = document.getElementById('meal-details');
         mealDetail.innerText = '';
         const div = document.createElement('div');
         div.innerHTML = `
-                        <div style="width:350px" class= "card mx-auto">
+                        <div style="width:300px" class= "card mx-auto">
                         <img src="${meal.strMealThumb}" class="card-img-top p-4" alt="...">
                                 <div class="card-body">
                                         <h5 class="card-title">${meal.strMeal}</h5>
